@@ -10,19 +10,17 @@ natural languages like gender, plurals, conjugations, and others.
 
 ## Packages
 
-Fluent.js consists of a set of packages which have different use-cases and can
-be installed independently of each other.
+This repository is a Go port of Fluent.js at commit 9a925d2a. Its module, `github.com/projectfluent/fluent-go`,
+has these packages:
 
-- [@fluent/bundle](https://github.com/projectfluent/fluent.js/tree/main/fluent-bundle)
-- [@fluent/dedent](https://github.com/projectfluent/fluent.js/tree/main/fluent-dedent)
-- [@fluent/dom](https://github.com/projectfluent/fluent.js/tree/main/fluent-dom)
-- [@fluent/langneg](https://github.com/projectfluent/fluent.js/tree/main/fluent-langneg)
-- [@fluent/react](https://github.com/projectfluent/fluent.js/tree/main/fluent-react)
-- [@fluent/sequence](https://github.com/projectfluent/fluent.js/tree/main/fluent-sequence)
-- [@fluent/syntax](https://github.com/projectfluent/fluent.js/tree/main/fluent-syntax)
+- `syntax`: the FTL parser, AST, serializer, `Visitor` and `Transformer` (`@fluent/syntax`)
+- `bundle`: `FluentBundle`, `FluentResource` and the runtime types (`@fluent/bundle`)
+- `langneg`: language negotiation (`@fluent/langneg`)
+- `sequence`: `MapBundleSync` (`@fluent/sequence`)
+- `dedent`: `Ftl` (`@fluent/dedent`)
 
-You can install each of the above packages via `npm`, e.g. `npm install @fluent/react`.  
-See the end of this `README` for instructions on how to build `fluent.js` locally.
+`internal/intl` reproduces the `Intl` objects those packages rely on, as Node.js 24.22.1 implements them, over the ICU
+and CLDR data in `internal/icudata`. See `THIRD_PARTY_NOTICES.md`.
 
 ## Learn the FTL syntax
 
@@ -58,30 +56,4 @@ feedback.
 
 ## Local Development
 
-Hacking on `fluent.js` is easy! To quickly get started clone the repo:
-
-    $ git clone https://github.com/projectfluent/fluent.js.git
-    $ cd fluent.js
-
-You'll need at least **Node.js 20.19**.
-Older versions are not supported.
-
-Install the dependencies used by all packages, which are managed as
-[npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces):
-
-    $ npm install
-
-Build and test all packages at once:
-
-    $ npm run dist
-
-…which is equivalent to:
-
-    $ npm run clean
-    $ npm run build --workspaces
-    $ npm run lint
-    $ npm run test
-    $ npm run docs
-
-Each package may also be built separately by running `npm run build` in
-its directory.
+Build and test with `go build ./...` and `go test ./...`.
